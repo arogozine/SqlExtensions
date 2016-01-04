@@ -1,0 +1,14 @@
+﻿Query Types,
+	QuerySingle - Single Result (TOut)
+	QueryList - IReadOnlyList<TOut>
+		Functions passed in to QueryList must return a List
+
+Parameters,
+	No Parameters
+	IEnumerable<KeyValuePair<string, TVal>> (Such as a dictionary)
+	params Tuple<string, TVal>[] (tuples)
+
+Each Method should have an "Async" counterpart.
+
+UsingTransaction has optional IsolationLevel parameter
+Transactions do not auto commit
