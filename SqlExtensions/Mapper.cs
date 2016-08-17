@@ -150,7 +150,7 @@ namespace SqlExtensions
 
             while (reader.Read())
             {
-                var dict = Dynamic(reader);
+                var dict = DynamicSingle(reader);
                 list.Add(dict);
             }
 
@@ -168,7 +168,7 @@ namespace SqlExtensions
 
             while (await reader.ReadAsync())
             {
-                var dict = Dynamic(reader);
+                var dict = DynamicSingle(reader);
                 list.Add(dict);
             }
 
