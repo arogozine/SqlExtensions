@@ -77,16 +77,6 @@ namespace SqlExtensions
         public static TAnonymous GenerateTest<TAnonymous>(TAnonymous input)
             where TAnonymous : class
         {
-
-
-
-
-
-
-
-
-
-
             PropertyInfo[] properties = typeof(TAnonymous).GetProperties(PublicInstanceFlatten)
                 .Where(p => p.CanRead)
                 .ToArray();

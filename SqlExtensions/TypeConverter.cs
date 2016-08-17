@@ -206,6 +206,21 @@ namespace SqlExtensions
             AddCastConversion<UInt64, UIntPtr>();
             AddCastConversion<UIntPtr, UInt32>();
             AddCastConversion<UIntPtr, UInt64>();
+
+            /*
+            var results = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(a => a.GetTypes())
+                .Where(t => t.Namespace == nameof(System))
+                .Where(t => t.IsPublic)
+                .Where(t => t.IsValueType)
+                .Where(t => typeof(ArgIterator) != t)
+                .Where(t => typeof(RuntimeArgumentHandle) != t)
+                .Where(t => typeof(TypedReference) != t)
+                .Where(t => typeof(void) != t)
+                .Where(t => !t.IsGenericType)
+                .Where(t => !t.IsEnum)
+                .ToList();
+            */
         }
 
         private static void AddCastConversion<TFrom, TTo>()

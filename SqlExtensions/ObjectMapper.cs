@@ -132,7 +132,7 @@ namespace SqlExtensions
             TObject obj = null;
 
             // Cache Setters
-            var setters = GetSetters(reader);
+            SetMethodDelegate<TObject>[] setters = GetSetters(reader);
 
             if (reader.Read())
             {
@@ -152,7 +152,7 @@ namespace SqlExtensions
             TObject obj = null;
 
             // Cache Setters
-            var setters = GetSetters(reader);
+            SetMethodDelegate<TObject>[] setters = GetSetters(reader);
 
             if (await reader.ReadAsync())
             {
