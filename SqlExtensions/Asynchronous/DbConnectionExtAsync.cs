@@ -293,16 +293,16 @@ namespace SqlExtensions
 
         #region NonQuery
 
-        public static async Task<int> NonQuery(this DbConnection conn, string sql, object parameters)
+        public static async Task<int> NonQueryAsync(this DbConnection conn, string sql, object parameters)
             => await conn.UsingCommandAsync(sql, cmd => cmd.ExecuteNonQueryAsync(), parameters);
 
-        public static async Task<int> NonQuery<TValue>(this DbConnection conn, string sql, params Tuple<string, TValue>[] parameters)
+        public static async Task<int> NonQueryAsync<TValue>(this DbConnection conn, string sql, params Tuple<string, TValue>[] parameters)
             => await conn.UsingCommandAsync(sql, cmd => cmd.ExecuteNonQueryAsync(), parameters);
 
-        public static async Task<int> NonQuery<TValue>(this DbConnection conn, string sql, IEnumerable<Tuple<string, TValue>> parameters)
+        public static async Task<int> NonQueryAsync<TValue>(this DbConnection conn, string sql, IEnumerable<Tuple<string, TValue>> parameters)
             => await conn.UsingCommandAsync(sql, cmd => cmd.ExecuteNonQueryAsync(), parameters);
 
-        public static async Task<int> NonQuery<TValue>(this DbConnection conn, string sql, IEnumerable<KeyValuePair<string, TValue>> parameters)
+        public static async Task<int> NonQueryAsync<TValue>(this DbConnection conn, string sql, IEnumerable<KeyValuePair<string, TValue>> parameters)
             => await conn.UsingCommandAsync(sql, cmd => cmd.ExecuteNonQueryAsync(), parameters);
 
         #endregion
