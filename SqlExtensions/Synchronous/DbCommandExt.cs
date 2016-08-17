@@ -30,9 +30,7 @@ namespace SqlExtensions
         {
             using (var reader = cmd.ExecuteReader())
             {
-                reader.Read();
-
-                return func(reader);
+                return reader.Read() ? func(reader) : default(TOut);
             }
         }
 
@@ -40,9 +38,7 @@ namespace SqlExtensions
         {
             using (var reader = cmd.ExecuteReader())
             {
-                reader.Read();
-
-                return reader.QuerySingle(func);
+                return reader.Read() ? func(reader) : default(TOut);
             }
         }
 
