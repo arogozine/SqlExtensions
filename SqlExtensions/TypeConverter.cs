@@ -230,12 +230,12 @@ namespace SqlExtensions
             Converter caster = GenerateCast(typeof(TFrom), typeof(TTo));
             AddCaster<TFrom, TTo>(caster);
         }
-
+        
         private static void AddManualTypeConversions()
         {
             AddCaster<DateTime, TimeSpan>(x => ((DateTime)x).TimeOfDay);
             AddCaster<TimeSpan, DateTime>(x => new DateTime() + (TimeSpan)x);
-
+            
             // Char -> Numeric
             AddConverter(typeof(char), typeof(double), x => char.GetNumericValue((char)x));
             AddConverter(typeof(char), typeof(float), x => (float)char.GetNumericValue((char)x));
@@ -360,73 +360,56 @@ namespace SqlExtensions
         {
             if (from.GetInterface(nameof(IConvertible)) != null)
             {
-                // C# doesn't support switch / match on Type
-                if (typeof(bool) == to)
+                switch (Type.GetTypeCode(to))
                 {
-                    AddConverter(from, to, x => ((IConvertible)x).ToBoolean(null));
+                    case TypeCode.Boolean:
+                        AddConverter(from, to, x => ((IConvertible)x).ToBoolean(null));
+                        return true;
+                    case TypeCode.Byte:
+                        AddConverter(from, to, x => ((IConvertible)x).ToByte(null));
+                        return true;
+                    case TypeCode.Char:
+                        AddConverter(from, to, x => ((IConvertible)x).ToChar(null));
+                        return true;
+                    case TypeCode.DateTime:
+                        AddConverter(from, to, x => ((IConvertible)x).ToDateTime(null));
+                        return true;
+                    case TypeCode.Decimal:
+                        AddConverter(from, to, x => ((IConvertible)x).ToDecimal(null));
+                        return true;
+                    case TypeCode.Double:
+                        AddConverter(from, to, x => ((IConvertible)x).ToDouble(null));
+                        return true;
+                    case TypeCode.Int16:
+                        AddConverter(from, to, x => ((IConvertible)x).ToInt16(null));
+                        return true;
+                    case TypeCode.Int32:
+                        AddConverter(from, to, x => ((IConvertible)x).ToInt32(null));
+                        return true;
+                    case TypeCode.Int64:
+                        AddConverter(from, to, x => ((IConvertible)x).ToInt64(null));
+                        return true;
+                    case TypeCode.SByte:
+                        AddConverter(from, to, x => ((IConvertible)x).ToSByte(null));
+                        return true;
+                    case TypeCode.Single:
+                        AddConverter(from, to, x => ((IConvertible)x).ToSingle(null));
+                        return true;
+                    case TypeCode.String:
+                        AddConverter(from, to, x => ((IConvertible)x).ToString(null));
+                        return true;
+                    case TypeCode.UInt16:
+                        AddConverter(from, to, x => ((IConvertible)x).ToUInt16(null));
+                        return true;
+                    case TypeCode.UInt32:
+                        AddConverter(from, to, x => ((IConvertible)x).ToUInt32(null));
+                        return true;
+                    case TypeCode.UInt64:
+                        AddConverter(from, to, x => ((IConvertible)x).ToUInt64(null));
+                        return true;
+                    default:
+                        return false;
                 }
-                else if (typeof(byte) == to)
-                {
-                    AddConverter(from, to, x => ((IConvertible)x).ToByte(null));
-                }
-                else if (typeof(char) == to)
-                {
-                    AddConverter(from, to, x => ((IConvertible)x).ToChar(null));
-                }
-                else if (typeof(DateTime) == to)
-                {
-                    AddConverter(from, to, x => ((IConvertible)x).ToDateTime(null));
-                }
-                else if (typeof(decimal) == to)
-                {
-                    AddConverter(from, to, x => ((IConvertible)x).ToDecimal(null));
-                }
-                else if (typeof(double) == to)
-                {
-                    AddConverter(from, to, x => ((IConvertible)x).ToDouble(null));
-                }
-                else if (typeof(short) == to)
-                {
-                    AddConverter(from, to, x => ((IConvertible)x).ToInt16(null));
-                }
-                else if (typeof(int) == to)
-                {
-                    AddConverter(from, to, x => ((IConvertible)x).ToInt32(null));
-                }
-                else if (typeof(long) == to)
-                {
-                    AddConverter(from, to, x => ((IConvertible)x).ToInt64(null));
-                }
-                else if (typeof(sbyte) == to)
-                {
-                    AddConverter(from, to, x => ((IConvertible)x).ToSByte(null));
-                }
-                else if (typeof(float) == to)
-                {
-                    AddConverter(from, to, x => ((IConvertible)x).ToSingle(null));
-                }
-                else if (typeof(string) == to)
-                {
-                    AddConverter(from, to, x => ((IConvertible)x).ToString(null));
-                }
-                else if (typeof(ushort) == to)
-                {
-                    AddConverter(from, to, x => ((IConvertible)x).ToUInt16(null));
-                }
-                else if (typeof(uint) == to)
-                {
-                    AddConverter(from, to, x => ((IConvertible)x).ToUInt32(null));
-                }
-                else if (typeof(ulong) == to)
-                {
-                    AddConverter(from, to, x => ((IConvertible)x).ToUInt64(null));
-                }
-                else
-                {
-                    return false;
-                }
-
-                return true;
             }
 
             return false;

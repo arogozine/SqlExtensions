@@ -68,12 +68,7 @@ namespace SqlExtensions
 
             return sqlQueryParameterSetter;
         }
-
-        public static Func<DbCommand, TAnonymous> GetOutputParameters<TAnonymous>()
-        {
-            return null;
-        }
-
+        
         public static TAnonymous GenerateTest<TAnonymous>(TAnonymous input)
             where TAnonymous : class
         {
