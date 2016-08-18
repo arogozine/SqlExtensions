@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnitTests.Properties;
 
 namespace UnitTests
 {
@@ -34,7 +35,7 @@ namespace UnitTests
         {
             Database = "classicmodels",
             UserID = "John",
-            Password = "TODO", //TODO
+            Password = Settings.Default.Password,
             Server = "localhost",
             Port = 3306,
         };
@@ -81,12 +82,29 @@ namespace UnitTests
         }
 
         [TestMethod]
+        public async Task ObjectDictionaryAsync() {
+            var connector = new SqlConnector(() => new MySqlConnection(connectionString.GetConnectionString(true)));
+            IReadOnlyList<IReadOnlyDictionary<string, object>> test = await connector.QueryListAsync("SELECT * FROM classicmodels.offices", Mapper.ObjectAsync);
+            Assert.IsNotNull(test);
+            Assert.IsTrue(test.Count > 1);
+        }
+
+        [TestMethod]
         public void ObjectDynamic()
         {
             var connector = new SqlConnector(() => new MySqlConnection(connectionString.GetConnectionString(true)));
             IReadOnlyList<dynamic> test = connector.QueryList("SELECT * FROM classicmodels.offices", Mapper.Dynamic);
             Assert.IsNotNull(test);
-            //Assert.IsTrue(test.Count > 1);
+            Assert.IsTrue(test.Count > 1);
+        }
+
+        [TestMethod]
+        public async Task ObjectDynamicAsync()
+        {
+            var connector = new SqlConnector(() => new MySqlConnection(connectionString.GetConnectionString(true)));
+            IReadOnlyList<dynamic> test = await connector.QueryListAsync("SELECT * FROM classicmodels.offices", Mapper.DynamicAsync);
+            Assert.IsNotNull(test);
+            Assert.IsTrue(test.Count > 1);
         }
 
         [TestMethod]
@@ -101,12 +119,7 @@ namespace UnitTests
         [TestMethod]
         public void QuerySingleParams()
         {
-            Debug.WriteLine("A");
-            var t = ParamMapper.GenerateParameterMap(new { OfficeCode = "1" });
             var connector = new SqlConnector(() => new MySqlConnection(connectionString.GetConnectionString(true)));
-            // Offices office = connector.QuerySingle("SELECT * FROM `classicmodels`.`offices` WHERE `OfficeCode` = @OfficeCode", ObjectMapper<Offices>.Map, Tuple.Create("OfficeCode", "1"));
-            // Assert.IsNotNull(office);
-
             Offices office = connector.QuerySingle("SELECT * FROM `classicmodels`.`offices` WHERE `OfficeCode` = @OfficeCode", ObjectMapper<Offices>.Map, new { OfficeCode = "1" });
             Assert.IsNotNull(office);
         }
@@ -138,5 +151,13 @@ namespace UnitTests
             Assert.IsNotNull(test);
             Assert.IsTrue(test.Count > 1);
         }
+
+        [TestMethod]
+        public void TestUpdate1()
+        {
+            var connector = new SqlConnector(() => new MySqlConnection(connectionString.GetConnectionString(true)));
+            connector.UsingConnection(conn => conn.NonQuery(@"UPDATE `classicmodels`.`offices` SET `postalCode`= '94081' WHERE `officeCode`= @officeCode;", new { officeCode = "1" }));
+        }
+
     }
 }

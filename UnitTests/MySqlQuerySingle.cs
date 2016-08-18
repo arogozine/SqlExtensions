@@ -3,9 +3,13 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MySql.Data.MySqlClient;
 using SqlExtensions;
 using System.Collections.Generic;
+using UnitTests.Properties;
 
 namespace UnitTests
 {
+    // Tests utilize http://www.mysqltutorial.org/mysql-sample-database.aspx
+    // sample database
+
     [TestClass]
     public class MySqlQuerySingle
     {
@@ -13,7 +17,7 @@ namespace UnitTests
         {
             Database = "classicmodels",
             UserID = "John",
-            Password = "TODO", //TODO
+            Password = Settings.Default.Password,
             Server = "localhost",
             Port = 3306,
         };
@@ -25,7 +29,7 @@ namespace UnitTests
             var connector = new SqlConnector(() => new MySqlConnection(connectionString.GetConnectionString(true)));
 
             IReadOnlyDictionary<string, string> test = connector
-                .QuerySingle("SELECT * FROM classicmodels.offices", Mapper.StringSingle);
+                .QuerySingle("SELECT * FROM classicmodels.offices LIMIT 1", Mapper.StringSingle);
 
             Assert.IsNotNull(test);
         }
@@ -36,7 +40,7 @@ namespace UnitTests
             var connector = new SqlConnector(() => new MySqlConnection(connectionString.GetConnectionString(true)));
 
             IReadOnlyDictionary<string, string> test = connector
-                .QuerySingle("SELECT * FROM classicmodels.offices WHERE territory = @territory", Mapper.StringSingle, new { territory = "NA" });
+                .QuerySingle("SELECT * FROM classicmodels.offices WHERE territory = @territory LIMIT 1", Mapper.StringSingle, new { territory = "NA" });
 
             Assert.IsNotNull(test);
         }

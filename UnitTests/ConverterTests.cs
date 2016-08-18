@@ -12,6 +12,7 @@ namespace UnitTests
     public class ConverterTests
     {
         [TestMethod]
+        [TestCategory(nameof(ConverterTests))]
         [ExpectedException(typeof(ConversionNotSupportedException))]
         public void EnumToClassError()
         {
@@ -28,6 +29,7 @@ namespace UnitTests
         }
 
         [TestMethod]
+        [TestCategory(nameof(ConverterTests))]
         public void TestStaticParseMethod()
         {
             ClassWithParse foo = TypeConverter.Convert<string, ClassWithParse>("someValidValue");
@@ -41,6 +43,7 @@ namespace UnitTests
         class Doge : Animal { }
 
         [TestMethod]
+        [TestCategory(nameof(ConverterTests))]
         public void ConvertClassToInterface()
         {
             Animal animalObject = new Animal();
@@ -50,6 +53,7 @@ namespace UnitTests
         }
 
         [TestMethod]
+        [TestCategory(nameof(ConverterTests))]
         public void ConvertInterfaceToClass()
         {
             IAnimal animalInterface = new Animal();
@@ -59,6 +63,7 @@ namespace UnitTests
         }
 
         [TestMethod]
+        [TestCategory(nameof(ConverterTests))]
         public void ConvertDateTimeToTimeSpan()
         {
             DateTime currentDateTime = DateTime.Now;
@@ -67,6 +72,7 @@ namespace UnitTests
         }
 
         [TestMethod]
+        [TestCategory(nameof(ConverterTests))]
         public void ConvertTimeSpanToDateTime()
         {
             TimeSpan currentTimeSpan = DateTime.Now.TimeOfDay;
@@ -75,6 +81,7 @@ namespace UnitTests
         }
 
         [TestMethod]
+        [TestCategory(nameof(ConverterTests))]
         public void ConvertBoolToBool()
         {
             bool falseBool = TypeConverter.Convert<bool, bool>(false);
@@ -82,6 +89,7 @@ namespace UnitTests
         }
 
         [TestMethod]
+        [TestCategory(nameof(ConverterTests))]
         public void ConvertBoolToBool_NonGeneric()
         {
             object falseBool = TypeConverter.Convert(typeof(bool), typeof(bool), false);
@@ -90,6 +98,7 @@ namespace UnitTests
         }
 
         [TestMethod]
+        [TestCategory(nameof(ConverterTests))]
         public void ConvertEnumStructToEnumClass()
         {
             Enum e = TypeConverter.Convert<TypeCode, Enum>(TypeCode.Byte);
@@ -98,6 +107,7 @@ namespace UnitTests
         }
 
         [TestMethod]
+        [TestCategory(nameof(ConverterTests))]
         public void ConvertEnumStructToEnumClass_NonGeneric()
         {
             object e = TypeConverter.Convert(typeof(TypeCode), typeof(Enum), TypeCode.Byte);
@@ -106,36 +116,47 @@ namespace UnitTests
         }
         
         [TestMethod]
+        [TestCategory(nameof(ConverterTests))]
         public void ConvertEnumByte() => TestEnumConvert<byte>();
 
         [TestMethod]
+        [TestCategory(nameof(ConverterTests))]
         public void ConvertEnumSByte() => TestEnumConvert<sbyte>();
 
         [TestMethod]
+        [TestCategory(nameof(ConverterTests))]
         public void ConvertEnumShort() => TestEnumConvert<short>();
 
         [TestMethod]
+        [TestCategory(nameof(ConverterTests))]
         public void ConvertEnumUShort() => TestEnumConvert<ushort>();
 
         [TestMethod]
+        [TestCategory(nameof(ConverterTests))]
         public void ConvertEnumInt() => TestEnumConvert<int>();
 
         [TestMethod]
+        [TestCategory(nameof(ConverterTests))]
         public void ConvertEnumUInt() => TestEnumConvert<uint>();
 
         [TestMethod]
+        [TestCategory(nameof(ConverterTests))]
         public void ConvertEnumLong() => TestEnumConvert<long>();
 
         [TestMethod]
+        [TestCategory(nameof(ConverterTests))]
         public void ConvertEnumULong() => TestEnumConvert<ulong>();
 
         [TestMethod]
+        [TestCategory(nameof(ConverterTests))]
         public void ConvertEnumFloat() => TestEnumConvert<float>();
 
         [TestMethod]
+        [TestCategory(nameof(ConverterTests))]
         public void ConvertEnumDouble() => TestEnumConvert<double>();
 
         [TestMethod]
+        [TestCategory(nameof(ConverterTests))]
         public void ConvertEnumDecimal() => TestEnumConvert<decimal>();
 
         private void TestEnumConvert<TTo>()
@@ -164,36 +185,47 @@ namespace UnitTests
         }
 
         [TestMethod]
+        [TestCategory(nameof(ConverterTests))]
         public void ConvertEnumByteNonGen() => TestEnumConvertNonGen<byte>();
 
         [TestMethod]
+        [TestCategory(nameof(ConverterTests))]
         public void ConvertEnumSByteNonGen() => TestEnumConvertNonGen<sbyte>();
 
         [TestMethod]
+        [TestCategory(nameof(ConverterTests))]
         public void ConvertEnumShortNonGen() => TestEnumConvertNonGen<short>();
 
         [TestMethod]
+        [TestCategory(nameof(ConverterTests))]
         public void ConvertEnumUShortNonGen() => TestEnumConvertNonGen<ushort>();
 
         [TestMethod]
+        [TestCategory(nameof(ConverterTests))]
         public void ConvertEnumIntNonGen() => TestEnumConvertNonGen<int>();
 
         [TestMethod]
+        [TestCategory(nameof(ConverterTests))]
         public void ConvertEnumUIntNonGen() => TestEnumConvertNonGen<uint>();
 
         [TestMethod]
+        [TestCategory(nameof(ConverterTests))]
         public void ConvertEnumLongNonGen() => TestEnumConvertNonGen<long>();
 
         [TestMethod]
+        [TestCategory(nameof(ConverterTests))]
         public void ConvertEnumULongNonGen() => TestEnumConvertNonGen<ulong>();
 
         [TestMethod]
+        [TestCategory(nameof(ConverterTests))]
         public void ConvertEnumFloatNonGen() => TestEnumConvertNonGen<float>();
 
         [TestMethod]
+        [TestCategory(nameof(ConverterTests))]
         public void ConvertEnumDoubleNonGen() => TestEnumConvertNonGen<double>();
 
         [TestMethod]
+        [TestCategory(nameof(ConverterTests))]
         public void ConvertEnumDecimalNonGen() => TestEnumConvertNonGen<decimal>();
 
         private static void TestEnumConvertNonGen<TTo>()
@@ -210,45 +242,59 @@ namespace UnitTests
         }
         
         [TestMethod]
+        [TestCategory(nameof(ConverterTests))]
         public void TestParseTimeSpan() => TestParse(DateTime.Now.TimeOfDay);
 
         [TestMethod]
+        [TestCategory(nameof(ConverterTests))]
         public void TestParseDateTime() => TestParse(DateTime.Now);
 
         [TestMethod]
+        [TestCategory(nameof(ConverterTests))]
         public void TestParseByte() => TestParse(byte.MaxValue);
 
         [TestMethod]
+        [TestCategory(nameof(ConverterTests))]
         public void TestParseSByte() => TestParse(sbyte.MaxValue);
 
         [TestMethod]
+        [TestCategory(nameof(ConverterTests))]
         public void TestParseShort() => TestParse(short.MaxValue);
 
         [TestMethod]
+        [TestCategory(nameof(ConverterTests))]
         public void TestParseUShort() => TestParse(ushort.MaxValue);
 
         [TestMethod]
+        [TestCategory(nameof(ConverterTests))]
         public void TestParseInt() => TestParse(int.MaxValue);
 
         [TestMethod]
+        [TestCategory(nameof(ConverterTests))]
         public void TestParseUInt() => TestParse(uint.MaxValue);
 
         [TestMethod]
+        [TestCategory(nameof(ConverterTests))]
         public void TestParseLong() => TestParse(long.MaxValue);
 
         [TestMethod]
+        [TestCategory(nameof(ConverterTests))]
         public void TestParseULong() => TestParse(ulong.MaxValue);
 
         [TestMethod]
+        [TestCategory(nameof(ConverterTests))]
         public void TestParseFloat() => TestParse(float.MaxValue);
 
         [TestMethod]
+        [TestCategory(nameof(ConverterTests))]
         public void TestParseDouble() => TestParse(double.MaxValue);
 
         [TestMethod]
+        [TestCategory(nameof(ConverterTests))]
         public void TestDecimal() => TestParse(decimal.MaxValue);
 
         [TestMethod]
+        [TestCategory(nameof(ConverterTests))]
         public void TestParseBool() => TestParse(false);
 
         private static void TestParse<TInOut>(TInOut valueToParse)
@@ -261,18 +307,23 @@ namespace UnitTests
         }
 
         [TestMethod]
+        [TestCategory(nameof(ConverterTests))]
         public void FromShortToByte() => TestValueType<short, byte>(7);
 
         [TestMethod]
+        [TestCategory(nameof(ConverterTests))]
         public void FromUShortToByte() => TestValueType<ushort, byte>(7);
 
         [TestMethod]
+        [TestCategory(nameof(ConverterTests))]
         public void FromIntToByte() => TestValueType<int, byte>(7);
 
         [TestMethod]
+        [TestCategory(nameof(ConverterTests))]
         public void FromLongToByte() => TestValueType<long, byte>(7);
 
         [TestMethod]
+        [TestCategory(nameof(ConverterTests))]
         public void FromULongToByte() => TestValueType<ulong, byte>(7);
 
         public void TestValueType<TFrom, TTo>(TFrom val)
@@ -312,5 +363,127 @@ namespace UnitTests
         {
             Assert.AreEqual(values.Select(x => x == null ? null : x.ToString()).Distinct().Count(), 1);
         }
+
+        class IConvertibleTestClass : IConvertible
+        {
+            public TypeCode GetTypeCode() => TypeCode.Object;
+
+            public bool ToBoolean(IFormatProvider provider)
+                => false;
+
+            public byte ToByte(IFormatProvider provider)
+                => 1;
+
+            public char ToChar(IFormatProvider provider)
+                => 'a';
+
+            public DateTime ToDateTime(IFormatProvider provider)
+                => DateTime.Now;
+
+            public decimal ToDecimal(IFormatProvider provider)
+                => 2;
+
+            public double ToDouble(IFormatProvider provider)
+                => 3;
+
+            public short ToInt16(IFormatProvider provider)
+                => 4;
+
+            public int ToInt32(IFormatProvider provider)
+                => 5;
+
+            public long ToInt64(IFormatProvider provider)
+                => 6;
+
+            public sbyte ToSByte(IFormatProvider provider)
+                => 7;
+
+            public float ToSingle(IFormatProvider provider)
+                => 8;
+
+            public string ToString(IFormatProvider provider)
+                => "9";
+
+            public object ToType(Type conversionType, IFormatProvider provider)
+            {
+                throw new NotImplementedException();
+            }
+
+            public ushort ToUInt16(IFormatProvider provider)
+                => 10;
+
+            public uint ToUInt32(IFormatProvider provider)
+                => 11;
+
+            public ulong ToUInt64(IFormatProvider provider)
+                => 12;
+        }
+
+        private static void IConvertibleTo<TOut>(Func<IConvertible, Func<IFormatProvider, TOut>> func) {
+            TOut val = TypeConverter.Convert<IConvertibleTestClass, TOut>(new IConvertibleTestClass());
+            TOut val2 = func(new IConvertibleTestClass())(null);
+            Assert.AreEqual(val, val2);
+        }
+
+        [TestMethod]
+        [TestCategory(nameof(ConverterTests))]
+        public void IConvertibleToBoolean() => IConvertibleTo<bool>(x => x.ToBoolean);
+
+        [TestMethod]
+        [TestCategory(nameof(ConverterTests))]
+        public void IConvertibleToByte() => IConvertibleTo<byte>(x => x.ToByte);
+
+        [TestMethod]
+        [TestCategory(nameof(ConverterTests))]
+        public void IConvertibleToChar() => IConvertibleTo<char>(x => x.ToChar);
+
+        [TestMethod]
+        [TestCategory(nameof(ConverterTests))]
+        public void IConvertibleToDateTime() => IConvertibleTo<DateTime>(x => x.ToDateTime);
+
+        [TestMethod]
+        [TestCategory(nameof(ConverterTests))]
+        public void IConvertibleToDecimal() => IConvertibleTo<decimal>(x => x.ToDecimal);
+
+        [TestMethod]
+        [TestCategory(nameof(ConverterTests))]
+        public void IConvertibleToDouble() => IConvertibleTo<double>(x => x.ToDouble);
+
+        [TestMethod]
+        [TestCategory(nameof(ConverterTests))]
+        public void IConvertibleToInt16() => IConvertibleTo<short>(x => x.ToInt16);
+
+        [TestMethod]
+        [TestCategory(nameof(ConverterTests))]
+        public void IConvertibleToInt32() => IConvertibleTo<int>(x => x.ToInt32);
+
+        [TestMethod]
+        [TestCategory(nameof(ConverterTests))]
+        public void IConvertibleToInt64() => IConvertibleTo<long>(x => x.ToInt64);
+
+        [TestMethod]
+        [TestCategory(nameof(ConverterTests))]
+        public void IConvertibleToSByte() => IConvertibleTo<sbyte>(x => x.ToSByte);
+
+        [TestMethod]
+        [TestCategory(nameof(ConverterTests))]
+        public void IConvertibleToSingle() => IConvertibleTo<float>(x => x.ToSingle);
+
+        [TestMethod]
+        [TestCategory(nameof(ConverterTests))]
+        public void IConvertibleToString() => IConvertibleTo<string>(x => x.ToString);
+
+        [TestMethod]
+        [TestCategory(nameof(ConverterTests))]
+        public void IConvertibleToUInt16() => IConvertibleTo<ushort>(x => x.ToUInt16);
+
+        [TestMethod]
+        [TestCategory(nameof(ConverterTests))]
+        public void IConvertibleToUInt32() => IConvertibleTo<uint>(x => x.ToUInt32);
+
+        [TestMethod]
+        [TestCategory(nameof(ConverterTests))]
+        public void IConvertibleToUInt64() => IConvertibleTo<ulong>(x => x.ToUInt64);
+
     }
 }
