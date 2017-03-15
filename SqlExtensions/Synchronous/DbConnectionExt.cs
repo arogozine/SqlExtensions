@@ -191,7 +191,7 @@ namespace SqlExtensions
             => conn.UsingCommand(query, func);
 
         public static IReadOnlyList<TOut> QueryList<TOut>(this DbConnection conn, string query, Func<DbCommand, IReadOnlyList<TOut>> func, object parameters)
-            => conn.UsingCommand(query, func);
+            => conn.UsingCommand(query, func, parameters);
 
         public static IReadOnlyList<TOut> QueryList<TOut, TValue>(this DbConnection conn, string query, Func<DbCommand, IReadOnlyList<TOut>> func, params Tuple<string, TValue>[] parameters)
             => conn.UsingCommand(query, func, parameters);
