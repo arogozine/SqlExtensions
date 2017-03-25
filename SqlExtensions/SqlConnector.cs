@@ -21,6 +21,11 @@ namespace SqlExtensions
 
         public void UsingConnection(Action<DbConnection> action)
         {
+            if (action == null)
+            {
+                throw new ArgumentNullException(nameof(action));
+            }
+
             using (DbConnection conn = generator())
             {
                 conn.Open();
@@ -30,6 +35,11 @@ namespace SqlExtensions
 
         public TOut UsingConnection<TOut>(Func<DbConnection, TOut> func)
         {
+            if (func == null)
+            {
+                throw new ArgumentNullException(nameof(func));
+            }
+
             using (DbConnection conn = generator())
             {
                 conn.Open();
