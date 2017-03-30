@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SqlExtensions
@@ -103,10 +101,10 @@ namespace SqlExtensions
         public IReadOnlyList<TOut> QueryList<TOut>(string query, Func<DbCommand, IReadOnlyList<TOut>> func, object parameters)
             => UsingConnection(conn => conn.QueryList(query, func, parameters));
 
-        public IReadOnlyList<TOut> QueryList<TOut, TValue>(string query, Func<DbCommand, IReadOnlyList<TOut>> func, params Tuple<string, TValue>[] parameters)
+        public IReadOnlyList<TOut> QueryList<TOut, TValue>(string query, Func<DbCommand, IReadOnlyList<TOut>> func, params (string, TValue)[] parameters)
             => UsingConnection(conn => conn.QueryList(query, func, parameters));
 
-        public IReadOnlyList<TOut> QueryList<TOut, TValue>(string query, Func<DbCommand, IReadOnlyList<TOut>> func, IEnumerable<Tuple<string, TValue>> parameters)
+        public IReadOnlyList<TOut> QueryList<TOut, TValue>(string query, Func<DbCommand, IReadOnlyList<TOut>> func, IEnumerable<(string, TValue)> parameters)
             => UsingConnection(conn => conn.QueryList(query, func, parameters));
 
         public async Task<IReadOnlyList<TOut>> QueryListAsync<TOut>(string query, Func<DbCommand, Task<IReadOnlyList<TOut>>> func)
@@ -115,10 +113,10 @@ namespace SqlExtensions
         public async Task<IReadOnlyList<TOut>> QueryListAsync<TOut>(string query, Func<DbCommand, Task<IReadOnlyList<TOut>>> func, object parameters)
             => await UsingConnectionAsync(conn => conn.QueryListAsync(query, func, parameters));
 
-        public async Task<IReadOnlyList<TOut>> QueryListAsync<TOut, TValue>(string query, Func<DbCommand, Task<IReadOnlyList<TOut>>> func, params Tuple<string, TValue>[] parameters)
+        public async Task<IReadOnlyList<TOut>> QueryListAsync<TOut, TValue>(string query, Func<DbCommand, Task<IReadOnlyList<TOut>>> func, params (string, TValue)[] parameters)
             => await UsingConnectionAsync(conn => conn.QueryListAsync(query, func, parameters));
 
-        public async Task<IReadOnlyList<TOut>> QueryListAsync<TOut, TValue>(string query, Func<DbCommand, Task<IReadOnlyList<TOut>>> func, IEnumerable<Tuple<string, TValue>> parameters)
+        public async Task<IReadOnlyList<TOut>> QueryListAsync<TOut, TValue>(string query, Func<DbCommand, Task<IReadOnlyList<TOut>>> func, IEnumerable<(string, TValue)> parameters)
             => await UsingConnectionAsync(conn => conn.QueryListAsync(query, func, parameters));
 
         #endregion
@@ -131,10 +129,10 @@ namespace SqlExtensions
         public IReadOnlyList<TOut> QueryList<TOut>(string query, Func<DbDataReader, IReadOnlyList<TOut>> func, object parameters)
             => UsingConnection(conn => conn.QueryList(query, func, parameters));
 
-        public IReadOnlyList<TOut> QueryList<TOut, TValue>(string query, Func<DbDataReader, IReadOnlyList<TOut>> func, params Tuple<string, TValue>[] parameters)
+        public IReadOnlyList<TOut> QueryList<TOut, TValue>(string query, Func<DbDataReader, IReadOnlyList<TOut>> func, params (string, TValue)[] parameters)
             => UsingConnection(conn => conn.QueryList(query, func, parameters));
 
-        public IReadOnlyList<TOut> QueryList<TOut, TValue>(string query, Func<DbDataReader, IReadOnlyList<TOut>> func, IEnumerable<Tuple<string, TValue>> parameters)
+        public IReadOnlyList<TOut> QueryList<TOut, TValue>(string query, Func<DbDataReader, IReadOnlyList<TOut>> func, IEnumerable<(string, TValue)> parameters)
             => UsingConnection(conn => conn.QueryList(query, func, parameters));
 
         public IReadOnlyList<TOut> QueryList<TOut, TValue>(string query, Func<DbCommand, IReadOnlyList<TOut>> func, IEnumerable<KeyValuePair<string, TValue>> parameters)
@@ -146,10 +144,10 @@ namespace SqlExtensions
         public async Task<IReadOnlyList<TOut>> QueryListAsync<TOut>(string query, Func<DbDataReader, Task<IReadOnlyList<TOut>>> func, object parameters)
             => await UsingConnectionAsync(conn => conn.QueryListAsync(query, func, parameters));
 
-        public async Task<IReadOnlyList<TOut>> QueryListAsync<TOut, TValue>(string query, Func<DbDataReader, Task<IReadOnlyList<TOut>>> func, params Tuple<string, TValue>[] parameters)
+        public async Task<IReadOnlyList<TOut>> QueryListAsync<TOut, TValue>(string query, Func<DbDataReader, Task<IReadOnlyList<TOut>>> func, params (string, TValue)[] parameters)
             => await UsingConnectionAsync(conn => conn.QueryListAsync(query, func, parameters));
 
-        public async Task<IReadOnlyList<TOut>> QueryListAsync<TOut, TValue>(string query, Func<DbDataReader, Task<IReadOnlyList<TOut>>> func, IEnumerable<Tuple<string, TValue>> parameters)
+        public async Task<IReadOnlyList<TOut>> QueryListAsync<TOut, TValue>(string query, Func<DbDataReader, Task<IReadOnlyList<TOut>>> func, IEnumerable<(string, TValue)> parameters)
             => await UsingConnectionAsync(conn => conn.QueryListAsync(query, func, parameters));
 
         public async Task<IReadOnlyList<TOut>> QueryListAsync<TOut, TValue>(string query, Func<DbCommand, Task<IReadOnlyList<TOut>>> func, IEnumerable<KeyValuePair<string, TValue>> parameters)
@@ -165,10 +163,10 @@ namespace SqlExtensions
         public TOut QuerySingle<TOut>(string query, Func<DbCommand, TOut> func, object parameters)
             => UsingConnection(conn => conn.QuerySingle(query, func, parameters));
 
-        public TOut QuerySingle<TOut, TValue>(string query, Func<DbCommand, TOut> func, params Tuple<string, TValue>[] parameters)
+        public TOut QuerySingle<TOut, TValue>(string query, Func<DbCommand, TOut> func, params (string, TValue)[] parameters)
             => UsingConnection(conn => conn.QuerySingle(query, func, parameters));
 
-        public TOut QuerySingle<TOut, TValue>(string query, Func<DbCommand, TOut> func, IEnumerable<Tuple<string, TValue>> parameters)
+        public TOut QuerySingle<TOut, TValue>(string query, Func<DbCommand, TOut> func, IEnumerable<(string, TValue)> parameters)
             => UsingConnection(conn => conn.QuerySingle(query, func, parameters));
 
         public TOut QuerySingle<TOut, TValue>(string query, Func<DbCommand, TOut> func, IEnumerable<KeyValuePair<string, TValue>> parameters)
@@ -180,10 +178,10 @@ namespace SqlExtensions
         public async Task<TOut> QuerySingleAsync<TOut>(string query, Func<DbCommand, Task<TOut>> func, object parameters)
             => await UsingConnectionAsync(conn => conn.QuerySingle(query, func, parameters));
 
-        public async Task<TOut> QuerySingleAsync<TOut, TValue>(string query, Func<DbCommand, Task<TOut>> func, params Tuple<string, TValue>[] parameters)
+        public async Task<TOut> QuerySingleAsync<TOut, TValue>(string query, Func<DbCommand, Task<TOut>> func, params (string, TValue)[] parameters)
             => await UsingConnectionAsync(conn => conn.QuerySingle(query, func, parameters));
 
-        public async Task<TOut> QuerySingleAsync<TOut, TValue>(string query, Func<DbCommand, Task<TOut>> func, IEnumerable<Tuple<string, TValue>> parameters)
+        public async Task<TOut> QuerySingleAsync<TOut, TValue>(string query, Func<DbCommand, Task<TOut>> func, IEnumerable<(string, TValue)> parameters)
             => await UsingConnectionAsync(conn => conn.QuerySingle(query, func, parameters));
 
         public async Task<TOut> QuerySingleAsync<TOut, TValue>(string query, Func<DbCommand, Task<TOut>> func, IEnumerable<KeyValuePair<string, TValue>> parameters)
@@ -199,10 +197,10 @@ namespace SqlExtensions
         public TOut QuerySingle<TOut>(string query, Func<DbDataReader, TOut> func, object parameters)
             => UsingConnection(conn => conn.QuerySingle(query, func, parameters));
 
-        public TOut QuerySingle<TOut, TValue>(string query, Func<DbDataReader, TOut> func, params Tuple<string, TValue>[] parameters)
+        public TOut QuerySingle<TOut, TValue>(string query, Func<DbDataReader, TOut> func, params (string, TValue)[] parameters)
             => UsingConnection(conn => conn.QuerySingle(query, func, parameters));
 
-        public TOut QuerySingle<TOut, TValue>(string query, Func<DbDataReader, TOut> func, IEnumerable<Tuple<string, TValue>> parameters)
+        public TOut QuerySingle<TOut, TValue>(string query, Func<DbDataReader, TOut> func, IEnumerable<(string, TValue)> parameters)
             => UsingConnection(conn => conn.QuerySingle(query, func, parameters));
 
         public TOut QuerySingle<TOut, TValue>(string query, Func<DbDataReader, TOut> func, IEnumerable<KeyValuePair<string, TValue>> parameters)
@@ -214,10 +212,10 @@ namespace SqlExtensions
         public async Task<TOut> QuerySingleAsync<TOut>(string query, Func<DbDataReader, Task<TOut>> func, object parameters)
             => await UsingConnectionAsync(conn => conn.QuerySingle(query, func, parameters));
 
-        public async Task<TOut> QuerySingleAsync<TOut, TValue>(string query, Func<DbDataReader, Task<TOut>> func, params Tuple<string, TValue>[] parameters)
+        public async Task<TOut> QuerySingleAsync<TOut, TValue>(string query, Func<DbDataReader, Task<TOut>> func, params (string, TValue)[] parameters)
             => await UsingConnectionAsync(conn => conn.QuerySingle(query, func, parameters));
 
-        public async Task<TOut> QuerySingleAsync<TOut, TValue>(string query, Func<DbDataReader, Task<TOut>> func, IEnumerable<Tuple<string, TValue>> parameters)
+        public async Task<TOut> QuerySingleAsync<TOut, TValue>(string query, Func<DbDataReader, Task<TOut>> func, IEnumerable<(string, TValue)> parameters)
             => await UsingConnectionAsync(conn => conn.QuerySingle(query, func, parameters));
 
         public async Task<TOut> QuerySingleAsync<TOut, TValue>(string query, Func<DbDataReader, Task<TOut>> func, IEnumerable<KeyValuePair<string, TValue>> parameters)

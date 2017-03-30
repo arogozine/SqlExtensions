@@ -27,15 +27,15 @@ namespace UnitTests
         public string Territory { get; set; }
     }
 
-
     [TestClass]
+    [TestCategory(nameof(MySqlTests))]
     public class MySqlTests
     {
         MySqlConnectionStringBuilder connectionString = new MySqlConnectionStringBuilder
         {
             Database = "classicmodels",
             UserID = "John",
-            Password = Settings.Default.Password,
+            Password = Resources.Password,
             Server = "localhost",
             Port = 3306,
         };

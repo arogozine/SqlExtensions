@@ -254,9 +254,7 @@ namespace SqlExtensions
                 throw new ArgumentNullException(nameof(genericType));
             }
 
-            Func<DbDataReader, object> mapper;
-
-            if (!mapDict.TryGetValue(genericType.Name, out mapper))
+            if (!mapDict.TryGetValue(genericType.Name, out Func<DbDataReader, object> mapper))
             {
                 GenerateCompiledMappers(genericType);
                 mapper = mapDict[genericType.Name];
@@ -272,8 +270,7 @@ namespace SqlExtensions
                 throw new ArgumentNullException(nameof(genericType));
             }
 
-            Func<DbDataReader, Task> mapper;
-            if (!mapAsyncDict.TryGetValue(genericType.Name, out mapper))
+            if (!mapAsyncDict.TryGetValue(genericType.Name, out Func<DbDataReader, Task> mapper))
             {
                 GenerateCompiledMappers(genericType);
                 mapper = mapAsyncDict[genericType.Name];
@@ -289,9 +286,7 @@ namespace SqlExtensions
                 throw new ArgumentNullException(nameof(genericType));
             }
 
-            Func<DbDataReader, IEnumerable> mapper;
-
-            if (!mapAllDict.TryGetValue(genericType.Name, out mapper))
+            if (!mapAllDict.TryGetValue(genericType.Name, out Func<DbDataReader, IEnumerable> mapper))
             {
                 GenerateCompiledMappers(genericType);
                 mapper = mapAllDict[genericType.Name];

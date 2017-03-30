@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SqlExtensions
 {
@@ -78,14 +75,14 @@ namespace SqlExtensions
             }
         }
 
-        public static void AddParameters<T>(this DbCommand command, IEnumerable<Tuple<string, T>> parameters)
+        public static void AddParameters<T>(this DbCommand command, IEnumerable<(string name, T value)> parameters)
         {
             if (parameters == null)
                 return;
 
-            foreach (Tuple<string, T> tuple in parameters)
+            foreach ((var name, T value) in parameters)
             {
-                command.AddParameterWithValue(tuple.Item1, tuple.Item2);
+                command.AddParameterWithValue(name, value);
             }
         }
     }

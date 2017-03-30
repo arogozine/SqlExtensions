@@ -308,17 +308,17 @@ namespace SqlExtensions
             {
                 // We can do conversions for Enum types
                 // check both from and to
-                if (from.IsEnum)
+                if (from.GetTypeInfo().IsEnum)
                 {
                     AddEnumConverters(from);
                 }
 
-                if (to.IsEnum)
+                if (to.GetTypeInfo().IsEnum)
                 {
                     AddEnumConverters(to);
                 }
 
-                if (to.IsEnum || from.IsEnum)
+                if (to.GetTypeInfo().IsEnum || from.GetTypeInfo().IsEnum)
                 {
                     // We added some enum converters
                     // try again
@@ -332,17 +332,19 @@ namespace SqlExtensions
                         AddConverter(from, to, GetParse(to));
                         return true;
                     }
-                    catch (Exception)
+                    catch
                     {
                         // no luck
                     }
                 }
             }
 
+            /*
             if (TryAddComponentTypeConverter(from, to))
             {
                 return true;
             }
+            */
 
             try
             {
@@ -358,7 +360,7 @@ namespace SqlExtensions
 
         private static bool TryAddIConvertibleConverter(Type from, Type to)
         {
-            if (from.GetInterface(nameof(IConvertible)) != null)
+            if (from.GetTypeInfo().GetInterface(nameof(IConvertible)) != null)
             {
                 switch (Type.GetTypeCode(to))
                 {
@@ -414,7 +416,7 @@ namespace SqlExtensions
 
             return false;
         }
-
+        /*
         private static bool TryAddComponentTypeConverter(Type from, Type to)
         {
             var converter = System.ComponentModel.TypeDescriptor.GetConverter(to);
@@ -435,7 +437,7 @@ namespace SqlExtensions
 
             return false;
         }
-
+        */
         public static void AddEnumConverters(Type enumType)
         {
             AddEnumCast<byte>(enumType);
@@ -485,8 +487,8 @@ namespace SqlExtensions
 
         private static void AddCaster(Type from, Type to)
         {
-            Type fromNullable = from.IsValueType ? Nullable.GetUnderlyingType(from) : null;
-            Type toNullable = to.IsValueType ? Nullable.GetUnderlyingType(to) : null;
+            Type fromNullable = from.GetTypeInfo().IsValueType ? Nullable.GetUnderlyingType(from) : null;
+            Type toNullable = to.GetTypeInfo().IsValueType ? Nullable.GetUnderlyingType(to) : null;
 
             if (fromNullable == null)
             {
@@ -515,7 +517,7 @@ namespace SqlExtensions
                     // Y to T
                     AddConverter(fromNullable, toNullable, GenerateCast(fromNullable, toNullable));
                 }
-                else if (to.IsValueType)
+                else if (to.GetTypeInfo().IsValueType)
                 {
                     Converter caster = GenerateCast(fromNullable, to);
                     // Nullable<Y> to T
@@ -537,11 +539,8 @@ namespace SqlExtensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static bool TryConvert(Type from, Type to, object value, out object result)
         {
-            Dictionary<Type, Converter> toDict;
-            Converter converter;
-
-            if (Converters.TryGetValue(from, out toDict) 
-                && toDict.TryGetValue(to, out converter))
+            if (Converters.TryGetValue(from, out Dictionary<Type, Converter> toDict)
+                && toDict.TryGetValue(to, out Converter converter))
             {
                 result = converter(value);
                 return true;
@@ -567,8 +566,7 @@ namespace SqlExtensions
 
         public static void AddConverter(Type from, Type to, Converter converter)
         {
-            Dictionary<Type, Converter> innerDictionary;
-            if (!Converters.TryGetValue(from, out innerDictionary))
+            if (!Converters.TryGetValue(from, out Dictionary<Type, Converter> innerDictionary))
             {
                 innerDictionary = new Dictionary<Type, Converter>();
                 Converters[from] = innerDictionary;
@@ -588,12 +586,10 @@ namespace SqlExtensions
             }
             else if (to == typeof(string))
             {
-                return value == null ? null : value.ToString();
+                return value?.ToString();
             }
 
-            object result;
-
-            if (TryConvert(from, to, value, out result) ||
+            if (TryConvert(from, to, value, out object result) ||
                 (TryGenerate(from, to) && TryConvert(from, to, value, out result)))
             {
                 return result;

@@ -1,28 +1,28 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MySql.Data.MySqlClient;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SqlExtensions;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using MySql.Data.MySqlClient;
 using UnitTests.Properties;
 
 namespace UnitTests
 {
-    // Tests utilize http://www.mysqltutorial.org/mysql-sample-database.aspx
-    // sample database
-
     [TestClass]
+    [TestCategory(nameof(MySqlQuerySingle))]
     public class MySqlQuerySingle
     {
         MySqlConnectionStringBuilder connectionString = new MySqlConnectionStringBuilder
         {
             Database = "classicmodels",
             UserID = "John",
-            Password = Settings.Default.Password,
+            Password = Resources.Password,
             Server = "localhost",
             Port = 3306,
         };
-
-
+        
         [TestMethod]
         public void MapperStringSingle()
         {
@@ -51,7 +51,7 @@ namespace UnitTests
             var connector = new SqlConnector(() => new MySqlConnection(connectionString.GetConnectionString(true)));
 
             IReadOnlyDictionary<string, string> test = connector
-                .QuerySingle("SELECT * FROM classicmodels.offices WHERE territory = @territory", Mapper.StringSingle, Tuple.Create("territory", "NA" ));
+                .QuerySingle("SELECT * FROM classicmodels.offices WHERE territory = @territory", Mapper.StringSingle, ("territory", "NA"));
 
             Assert.IsNotNull(test);
         }

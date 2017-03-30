@@ -32,20 +32,15 @@ namespace SqlExtensions
 
         private static readonly Dictionary<Type, Action<DbCommand, object>> Cache
             = new Dictionary<Type, Action<DbCommand, object>>();
-
-        public static Action<DbCommand, object> GenerateParameterMap<TParam>(TParam sqlParameterObject)
+        
+        public static Action<DbCommand, object> GenerateParameterMap<TParams>()
         {
-            if (sqlParameterObject == null)
-            {
-                throw new ArgumentNullException(nameof(sqlParameterObject));
-            }
+            Type parameterObjectType = typeof(TParams);
 
-            Action<DbCommand, object> sqlQueryParameterSetter;
-
-            if (!Cache.TryGetValue(sqlParameterObject.GetType(), out sqlQueryParameterSetter))
+            if (!Cache.TryGetValue(parameterObjectType, out var sqlQueryParameterSetter))
             {
-                sqlQueryParameterSetter = GenerateParameterMapPrivate(sqlParameterObject);
-                Cache[sqlParameterObject.GetType()] = sqlQueryParameterSetter;
+                sqlQueryParameterSetter = GenerateParameterMapPrivate(parameterObjectType);
+                Cache[parameterObjectType] = sqlQueryParameterSetter;
             }
 
             return sqlQueryParameterSetter;
@@ -58,12 +53,12 @@ namespace SqlExtensions
                 throw new ArgumentNullException(nameof(sqlParameterObject));
             }
 
-            Action<DbCommand, object> sqlQueryParameterSetter;
+            Type parameterObjectType = sqlParameterObject.GetType();
 
-            if (!Cache.TryGetValue(sqlParameterObject.GetType(), out sqlQueryParameterSetter))
+            if (!Cache.TryGetValue(parameterObjectType, out var sqlQueryParameterSetter))
             {
-                sqlQueryParameterSetter = GenerateParameterMapPrivate(sqlParameterObject);
-                Cache[sqlParameterObject.GetType()] = sqlQueryParameterSetter;
+                sqlQueryParameterSetter = GenerateParameterMapPrivate(parameterObjectType);
+                Cache[parameterObjectType] = sqlQueryParameterSetter;
             }
 
             return sqlQueryParameterSetter;
@@ -85,24 +80,15 @@ namespace SqlExtensions
                 .Compile()(input);
         }
 
-        private static Action<DbCommand, TAnonymous> GenerateAnonymousOutput<TAnonymous>()
+        private static Action<DbCommand, object> GenerateParameterMapPrivate(Type sqlParameterObjType)
         {
-            //Expression.New()
-
-            return null;
-        }
-
-        private static Action<DbCommand, object> GenerateParameterMapPrivate(object sqlParameterObject)
-        {
-            Type sqlParameterObjType = sqlParameterObject.GetType();
-
             PropertyInfo[] properties = sqlParameterObjType.GetProperties(PublicInstanceFlatten)
                 .Where(p => p.CanRead)
                 .ToArray();
 
             if (properties.Length == 0)
             {
-                throw new ArgumentException("No Public Properties in Parameter Object", nameof(sqlParameterObject));
+                throw new ArgumentException("No Public Properties in Parameter Object", nameof(sqlParameterObjType));
             }
 
             ParameterExpression dbCommandInput = Expression.Parameter(typeof(DbCommand), "dbCommandInput");
@@ -130,7 +116,7 @@ namespace SqlExtensions
         private static Expression SetParameter(ParameterExpression dbCommandInput, ParameterExpression parameterExpr, PropertyInfo property)
         {
             // var DbParameterForFoo = cmd.CreateParameter();
-            var dbParameterExp = Expression.Variable(typeof(DbParameter), string.Format("dbParameterFor{0}", property.Name));
+            var dbParameterExp = Expression.Variable(typeof(DbParameter), $"dbParameterFor{property.Name}");
             var dbParameterAssign = Expression.Assign(dbParameterExp, Expression.Call(dbCommandInput, DbCommand_CreateParameter));
 
             // DbParameterForFoo.Name = "Foo";
