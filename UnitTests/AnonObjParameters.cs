@@ -24,9 +24,7 @@ namespace UnitTests
         [TestMethod]
         public void SavesParameterTupleParams()
         {
-            var connector = new SqlConnector(() => new MySqlConnection(connectionString.GetConnectionString(true)));
-
-            dynamic test = connector.QuerySingle("SELECT @PassedInParam AS 'PassedInParam'", Mapper.DynamicSingle, ("PassedInParam", "Foo"));
+            dynamic test = TestEnvironment.Connector.QuerySingle("SELECT @PassedInParam AS 'PassedInParam'", Mapper.DynamicSingle, ("PassedInParam", "Foo"));
 
             Assert.IsNotNull(test);
             Assert.AreEqual<string>(test.PassedInParam, "Foo");
@@ -35,9 +33,7 @@ namespace UnitTests
         [TestMethod]
         public void SavesParameterTupleIEnumerable()
         {
-            var connector = new SqlConnector(() => new MySqlConnection(connectionString.GetConnectionString(true)));
-
-            dynamic test = connector.QuerySingle("SELECT @PassedInParam AS 'PassedInParam'", Mapper.DynamicSingle,
+            dynamic test = TestEnvironment.Connector.QuerySingle("SELECT @PassedInParam AS 'PassedInParam'", Mapper.DynamicSingle,
                 new List<(string, string)> { ("PassedInParam", "Foo") });
 
             Assert.IsNotNull(test);
@@ -47,9 +43,7 @@ namespace UnitTests
         [TestMethod]
         public void SavesParameterDictionary()
         {
-            var connector = new SqlConnector(() => new MySqlConnection(connectionString.GetConnectionString(true)));
-
-            dynamic test = connector.QuerySingle("SELECT @PassedInParam AS 'PassedInParam'", Mapper.DynamicSingle,
+            dynamic test = TestEnvironment.Connector.QuerySingle("SELECT @PassedInParam AS 'PassedInParam'", Mapper.DynamicSingle,
                 new Dictionary<string, string> {
                     {  "PassedInParam", "Foo" }
                 });
@@ -61,9 +55,7 @@ namespace UnitTests
         [TestMethod]
         public void SavesParameterAnonymousObject()
         {
-            var connector = new SqlConnector(() => new MySqlConnection(connectionString.GetConnectionString(true)));
-
-            dynamic test = connector.QuerySingle("SELECT @PassedInParam AS 'PassedInParam'", Mapper.DynamicSingle,
+            dynamic test = TestEnvironment.Connector.QuerySingle("SELECT @PassedInParam AS 'PassedInParam'", Mapper.DynamicSingle,
                 new { PassedInParam = "Foo" });
 
             Assert.IsNotNull(test);

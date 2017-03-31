@@ -14,21 +14,10 @@ namespace UnitTests
     [TestCategory(nameof(MySqlQuerySingle))]
     public class MySqlQuerySingle
     {
-        MySqlConnectionStringBuilder connectionString = new MySqlConnectionStringBuilder
-        {
-            Database = "classicmodels",
-            UserID = "John",
-            Password = Resources.Password,
-            Server = "localhost",
-            Port = 3306,
-        };
-        
         [TestMethod]
         public void MapperStringSingle()
         {
-            var connector = new SqlConnector(() => new MySqlConnection(connectionString.GetConnectionString(true)));
-
-            IReadOnlyDictionary<string, string> test = connector
+            IReadOnlyDictionary<string, string> test = TestEnvironment.Connector
                 .QuerySingle("SELECT * FROM classicmodels.offices LIMIT 1", Mapper.StringSingle);
 
             Assert.IsNotNull(test);
@@ -37,9 +26,7 @@ namespace UnitTests
         [TestMethod]
         public void MapperStringSingle_AnonymousParameters()
         {
-            var connector = new SqlConnector(() => new MySqlConnection(connectionString.GetConnectionString(true)));
-
-            IReadOnlyDictionary<string, string> test = connector
+            IReadOnlyDictionary<string, string> test = TestEnvironment.Connector
                 .QuerySingle("SELECT * FROM classicmodels.offices WHERE territory = @territory LIMIT 1", Mapper.StringSingle, new { territory = "NA" });
 
             Assert.IsNotNull(test);
@@ -48,9 +35,7 @@ namespace UnitTests
         [TestMethod]
         public void MapperStringSingle_TupleParameters()
         {
-            var connector = new SqlConnector(() => new MySqlConnection(connectionString.GetConnectionString(true)));
-
-            IReadOnlyDictionary<string, string> test = connector
+            IReadOnlyDictionary<string, string> test = TestEnvironment.Connector
                 .QuerySingle("SELECT * FROM classicmodels.offices WHERE territory = @territory", Mapper.StringSingle, ("territory", "NA"));
 
             Assert.IsNotNull(test);
@@ -59,15 +44,13 @@ namespace UnitTests
         [TestMethod]
         public void MapperStringSingle_DictionaryParameters()
         {
-            var connector = new SqlConnector(() => new MySqlConnection(connectionString.GetConnectionString(true)));
-
             var dictParam = new Dictionary<string, string> {
                 {
                     "territory", "NA"
                 }
             };
 
-            IReadOnlyDictionary<string, string> test = connector
+            IReadOnlyDictionary<string, string> test = TestEnvironment.Connector
                 .QuerySingle("SELECT * FROM classicmodels.offices WHERE territory = @territory", Mapper.StringSingle, dictParam);
 
             Assert.IsNotNull(test);
@@ -76,9 +59,7 @@ namespace UnitTests
         [TestMethod]
         public void MapperObjectSingle()
         {
-            var connector = new SqlConnector(() => new MySqlConnection(connectionString.GetConnectionString(true)));
-
-            IReadOnlyDictionary<string, object> test = connector
+            IReadOnlyDictionary<string, object> test = TestEnvironment.Connector
                 .QuerySingle("SELECT * FROM classicmodels.offices", Mapper.ObjectSingle);
 
             Assert.IsNotNull(test);
@@ -87,9 +68,7 @@ namespace UnitTests
         [TestMethod]
         public void MapperDynamicSingle()
         {
-            var connector = new SqlConnector(() => new MySqlConnection(connectionString.GetConnectionString(true)));
-
-            dynamic test = connector
+            dynamic test = TestEnvironment.Connector
                 .QuerySingle("SELECT * FROM classicmodels.offices", Mapper.DynamicSingle);
 
             Assert.IsNotNull(test);
@@ -98,9 +77,7 @@ namespace UnitTests
         [TestMethod]
         public void OfficeMapperSingle()
         {
-            var connector = new SqlConnector(() => new MySqlConnection(connectionString.GetConnectionString(true)));
-
-            Offices office = connector.QuerySingle("SELECT * FROM classicmodels.offices", ObjectMapper<Offices>.Map);
+            Offices office = TestEnvironment.Connector.QuerySingle("SELECT * FROM classicmodels.offices", ObjectMapper<Offices>.Map);
 
             Assert.IsNotNull(office);
         }

@@ -31,17 +31,17 @@ namespace UnitTests
     [TestCategory(nameof(MySqlTests))]
     public class MySqlTests
     {
-        MySqlConnectionStringBuilder connectionString = new MySqlConnectionStringBuilder
-        {
-            Database = "classicmodels",
-            UserID = "John",
-            Password = Resources.Password,
-            Server = "localhost",
-            Port = 3306,
-        };
-
         [TestMethod]
         public void TestConnect() {
+            MySqlConnectionStringBuilder connectionString = new MySqlConnectionStringBuilder
+            {
+                Database = "classicmodels",
+                UserID = "John",
+                Password = Resources.Password,
+                Server = "localhost",
+                Port = 3306,
+            };
+
             using (var conn = new MySqlConnection(connectionString.GetConnectionString(true)))
             {
                 conn.Open();
@@ -50,15 +50,13 @@ namespace UnitTests
 
         [TestMethod]
         public void TestGenerator() {
-            var connector = new SqlConnector(() => new MySqlConnection(connectionString.GetConnectionString(true)));
-            connector.UsingTransaction(db => { });
+            TestEnvironment.Connector.UsingTransaction(db => { });
         }
 
         [TestMethod]
         public void QueryList()
         {
-            var connector = new SqlConnector(() => new MySqlConnection(connectionString.GetConnectionString(true)));
-            IReadOnlyList<Offices> test = connector.QueryList("SELECT * FROM classicmodels.offices", ObjectMapper<Offices>.MapAll);
+            IReadOnlyList<Offices> test = TestEnvironment.Connector.QueryList("SELECT * FROM classicmodels.offices", ObjectMapper<Offices>.MapAll);
             Assert.IsNotNull(test);
             Assert.IsTrue(test.Count > 1);
         }
@@ -66,8 +64,7 @@ namespace UnitTests
         [TestMethod]
         public void StringDictionary()
         {
-            var connector = new SqlConnector(() => new MySqlConnection(connectionString.GetConnectionString(true)));
-            IReadOnlyList<IReadOnlyDictionary<string, string>> test = connector.QueryList("SELECT * FROM classicmodels.offices", Mapper.String);
+            IReadOnlyList<IReadOnlyDictionary<string, string>> test = TestEnvironment.Connector.QueryList("SELECT * FROM classicmodels.offices", Mapper.String);
             Assert.IsNotNull(test);
             Assert.IsTrue(test.Count > 1);
         }
@@ -75,16 +72,14 @@ namespace UnitTests
         [TestMethod]
         public void ObjectDictionary()
         {
-            var connector = new SqlConnector(() => new MySqlConnection(connectionString.GetConnectionString(true)));
-            IReadOnlyList<IReadOnlyDictionary<string, object>> test = connector.QueryList("SELECT * FROM classicmodels.offices", Mapper.Object);
+            IReadOnlyList<IReadOnlyDictionary<string, object>> test = TestEnvironment.Connector.QueryList("SELECT * FROM classicmodels.offices", Mapper.Object);
             Assert.IsNotNull(test);
             Assert.IsTrue(test.Count > 1);
         }
 
         [TestMethod]
         public async Task ObjectDictionaryAsync() {
-            var connector = new SqlConnector(() => new MySqlConnection(connectionString.GetConnectionString(true)));
-            IReadOnlyList<IReadOnlyDictionary<string, object>> test = await connector.QueryListAsync("SELECT * FROM classicmodels.offices", Mapper.ObjectAsync);
+            IReadOnlyList<IReadOnlyDictionary<string, object>> test = await TestEnvironment.Connector.QueryListAsync("SELECT * FROM classicmodels.offices", Mapper.ObjectAsync);
             Assert.IsNotNull(test);
             Assert.IsTrue(test.Count > 1);
         }
@@ -92,8 +87,7 @@ namespace UnitTests
         [TestMethod]
         public void ObjectDynamic()
         {
-            var connector = new SqlConnector(() => new MySqlConnection(connectionString.GetConnectionString(true)));
-            IReadOnlyList<dynamic> test = connector.QueryList("SELECT * FROM classicmodels.offices", Mapper.Dynamic);
+            IReadOnlyList<dynamic> test = TestEnvironment.Connector.QueryList("SELECT * FROM classicmodels.offices", Mapper.Dynamic);
             Assert.IsNotNull(test);
             Assert.IsTrue(test.Count > 1);
         }
@@ -101,8 +95,7 @@ namespace UnitTests
         [TestMethod]
         public async Task ObjectDynamicAsync()
         {
-            var connector = new SqlConnector(() => new MySqlConnection(connectionString.GetConnectionString(true)));
-            IReadOnlyList<dynamic> test = await connector.QueryListAsync("SELECT * FROM classicmodels.offices", Mapper.DynamicAsync);
+            IReadOnlyList<dynamic> test = await TestEnvironment.Connector.QueryListAsync("SELECT * FROM classicmodels.offices", Mapper.DynamicAsync);
             Assert.IsNotNull(test);
             Assert.IsTrue(test.Count > 1);
         }
@@ -110,8 +103,7 @@ namespace UnitTests
         [TestMethod]
         public async Task AsyncQuery()
         {
-            var connector = new SqlConnector(() => new MySqlConnection(connectionString.GetConnectionString(true)));
-            IReadOnlyList<Offices> test = await connector.QueryListAsync("SELECT * FROM classicmodels.offices", ObjectMapper<Offices>.MapAllAsync);
+            IReadOnlyList<Offices> test = await TestEnvironment.Connector.QueryListAsync("SELECT * FROM classicmodels.offices", ObjectMapper<Offices>.MapAllAsync);
             Assert.IsNotNull(test);
             Assert.IsTrue(test.Count > 1);
         }
@@ -119,26 +111,23 @@ namespace UnitTests
         [TestMethod]
         public void QuerySingleParams()
         {
-            var connector = new SqlConnector(() => new MySqlConnection(connectionString.GetConnectionString(true)));
-            Offices office = connector.QuerySingle("SELECT * FROM `classicmodels`.`offices` WHERE `OfficeCode` = @OfficeCode", ObjectMapper<Offices>.Map, new { OfficeCode = "1" });
+            Offices office = TestEnvironment.Connector.QuerySingle("SELECT * FROM `classicmodels`.`offices` WHERE `OfficeCode` = @OfficeCode", ObjectMapper<Offices>.Map, new { OfficeCode = "1" });
             Assert.IsNotNull(office);
         }
 
         [TestMethod]
         public void QuerySingleIEnumerable()
         {
-            var connector = new SqlConnector(() => new MySqlConnection(connectionString.GetConnectionString(true)));
             var parameters = new Dictionary<string, string> { { "OfficeCode", "1" } };
-            Offices office = connector.QuerySingle("SELECT * FROM `classicmodels`.`offices` WHERE `OfficeCode` = @OfficeCode", ObjectMapper<Offices>.Map, parameters);
+            Offices office = TestEnvironment.Connector.QuerySingle("SELECT * FROM `classicmodels`.`offices` WHERE `OfficeCode` = @OfficeCode", ObjectMapper<Offices>.Map, parameters);
             Assert.IsNotNull(office);
         }
 
         [TestMethod]
         public void QuerySingleIEnumerable2()
         {
-            var connector = new SqlConnector(() => new MySqlConnection(connectionString.GetConnectionString(true)));
             var parameters = new Dictionary<string, string> { { "OfficeCode", "1" } };
-            object office = connector
+            object office = TestEnvironment.Connector
                 .QuerySingle("SELECT * FROM `classicmodels`.`offices` WHERE `OfficeCode` = @OfficeCode", ObjectMapper.Map(typeof(Offices)), parameters);
             Assert.IsNotNull(office as Offices);
         }
@@ -146,8 +135,7 @@ namespace UnitTests
         [TestMethod]
         public void QueryComplexList()
         {
-            var connector = new SqlConnector(() => new MySqlConnection(connectionString.GetConnectionString(true)));
-            IReadOnlyList<OfficesTricky> test = connector.QueryList("SELECT * FROM classicmodels.offices", ObjectMapper<OfficesTricky>.MapAll);
+            IReadOnlyList<OfficesTricky> test = TestEnvironment.Connector.QueryList("SELECT * FROM classicmodels.offices", ObjectMapper<OfficesTricky>.MapAll);
             Assert.IsNotNull(test);
             Assert.IsTrue(test.Count > 1);
         }
@@ -155,8 +143,7 @@ namespace UnitTests
         [TestMethod]
         public void TestUpdate1()
         {
-            var connector = new SqlConnector(() => new MySqlConnection(connectionString.GetConnectionString(true)));
-            connector.UsingConnection(conn => conn.NonQuery(@"UPDATE `classicmodels`.`offices` SET `postalCode`= '94081' WHERE `officeCode`= @officeCode;", new { officeCode = "1" }));
+            TestEnvironment.Connector.UsingConnection(conn => conn.NonQuery(@"UPDATE `classicmodels`.`offices` SET `postalCode`= '94081' WHERE `officeCode`= @officeCode;", new { officeCode = "1" }));
         }
 
     }
