@@ -30,7 +30,7 @@ namespace SqlExtensions
         {
             using (var reader = await cmd.ExecuteReaderAsync())
             {
-                return await func(reader);
+                return await reader.ReadAsync() ? await func(reader) : default(TOut);
             }
         }
 

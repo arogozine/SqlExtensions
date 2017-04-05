@@ -271,7 +271,6 @@ namespace SqlExtensions
         public static async Task<TOut> QuerySingleAsync<TOut>(this DbConnection conn, string query, Func<DbCommand, Task<TOut>> func, object parameters)
             => await conn.UsingCommandAsync(query, func, parameters);
 
-
         public static async Task<TOut> QuerySingleAsync<TOut, TValue>(this DbConnection conn, string query, Func<DbCommand, Task<TOut>> func, params (string, TValue)[] parameters)
             => await conn.UsingCommandAsync(query, func, parameters);
 

@@ -9,8 +9,8 @@ using UnitTests.Properties;
 namespace UnitTests
 {
     [TestClass]
-    [TestCategory(nameof(AnonymousObjectParameters))]
-    public class AnonymousObjectParameters
+    [TestCategory(nameof(InputParameters))]
+    public class InputParameters
     {
         MySqlConnectionStringBuilder connectionString = new MySqlConnectionStringBuilder
         {
@@ -60,6 +60,19 @@ namespace UnitTests
 
             Assert.IsNotNull(test);
             Assert.AreEqual<string>(test.PassedInParam, "Foo");
+        }
+
+        public class PassedInParamObj
+        {
+            public string PassedInParam { get; set; }
+        }
+
+        [TestMethod]
+        public void FooBar() {
+            var test = TestEnvironment.Connector.QuerySingle("SELECT @PassedInParam AS 'PassedInParam'", ObjectMapper<PassedInParamObj>.Map, ("PassedInParam", "Foo"));
+
+            Assert.IsNotNull(test);
+            Assert.AreEqual(test.PassedInParam, "Foo");
         }
     }
 }

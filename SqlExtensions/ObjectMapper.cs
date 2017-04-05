@@ -128,38 +128,8 @@ namespace SqlExtensions
             {
                 throw new ArgumentNullException(nameof(reader));
             }
-
-            TObject obj = null;
-
-            // Cache Setters
-            SetMethodDelegate<TObject>[] setters = GetSetters(reader);
-
-            if (reader.Read())
-            {
-                obj = MapSingle(reader, setters);
-            }
-
-            return obj;
-        }
-
-        public static async Task<TObject> MapAsync(DbDataReader reader)
-        {
-            if (reader == null)
-            {
-                throw new ArgumentNullException(nameof(reader));
-            }
-
-            TObject obj = null;
-
-            // Cache Setters
-            SetMethodDelegate<TObject>[] setters = GetSetters(reader);
-
-            if (await reader.ReadAsync())
-            {
-                obj = MapSingle(reader, setters);
-            }
-
-            return obj;
+            
+            return MapSingle(reader, GetSetters(reader));
         }
 
         public static IReadOnlyList<TObject> MapAll(DbDataReader reader)
@@ -215,9 +185,6 @@ namespace SqlExtensions
         private static readonly Dictionary<string, Func<DbDataReader, IEnumerable>>
             mapAllDict = new Dictionary<string, Func<DbDataReader, IEnumerable>>();
 
-        private static readonly Dictionary<string, Func<DbDataReader, Task>>
-            mapAsyncDict = new Dictionary<string, Func<DbDataReader, Task>>();
-
         private static Func<DbDataReader, TOut> CompileFunction<TOut>(Type genericType, string methodName)
         {
             var method = typeof(ObjectMapper<>).MakeGenericType(genericType)
@@ -239,11 +206,7 @@ namespace SqlExtensions
             Func<DbDataReader, IEnumerable> mapAll = 
                 CompileFunction<IEnumerable>(genericType, nameof(ObjectMapper<object>.Map));
 
-            Func<DbDataReader, Task> mapAsync =
-                CompileFunction<Task>(genericType, nameof(ObjectMapper<object>.MapAsync));
-
             mapDict.Add(genericType.Name, map);
-            mapAsyncDict.Add(genericType.Name, mapAsync);
             mapAllDict.Add(genericType.Name, mapAll);
         }
 
@@ -258,22 +221,6 @@ namespace SqlExtensions
             {
                 GenerateCompiledMappers(genericType);
                 mapper = mapDict[genericType.Name];
-            }
-
-            return mapper;
-        }
-
-        public static Func<DbDataReader, Task> MapAsync(Type genericType)
-        {
-            if (genericType == null)
-            {
-                throw new ArgumentNullException(nameof(genericType));
-            }
-
-            if (!mapAsyncDict.TryGetValue(genericType.Name, out Func<DbDataReader, Task> mapper))
-            {
-                GenerateCompiledMappers(genericType);
-                mapper = mapAsyncDict[genericType.Name];
             }
 
             return mapper;
