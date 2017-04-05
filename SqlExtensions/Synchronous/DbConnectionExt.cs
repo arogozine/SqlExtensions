@@ -61,12 +61,12 @@ namespace SqlExtensions
 
         #region Using DbCommand
 
-        public static IReadOnlyList<TOut> UsingCommand<TOut, TValue>(this DbConnection conn, string query, Func<DbCommand, IReadOnlyList<TOut>> func, params (string, TValue)[] parameters)
+        public static IReadOnlyList<TOut> UsingCommand<TOut, TValue>(this DbConnection conn, string query, Func<DbCommand, IReadOnlyList<TOut>> func, params (string name, TValue value)[] parameters)
         {
-            return UsingCommand(conn, query, func, (IEnumerable<(string, TValue)>)parameters);
+            return UsingCommand(conn, query, func, (IEnumerable<(string name, TValue value)>)parameters);
         }
 
-        public static IReadOnlyList<TOut> UsingCommand<TOut, TValue>(this DbConnection conn, string query, Func<DbCommand, IReadOnlyList<TOut>> func, IEnumerable<(string, TValue)> parameters)
+        public static IReadOnlyList<TOut> UsingCommand<TOut, TValue>(this DbConnection conn, string query, Func<DbCommand, IReadOnlyList<TOut>> func, IEnumerable<(string name, TValue value)> parameters)
         {
             using (var dbCommand = conn.CreateCommand())
             {
@@ -109,12 +109,12 @@ namespace SqlExtensions
 
         #region Using DbCommand Action
 
-        public static void UsingCommand<TValue>(this DbConnection conn, string query, Action<DbCommand> action, params (string, TValue)[] parameters)
+        public static void UsingCommand<TValue>(this DbConnection conn, string query, Action<DbCommand> action, params (string name, TValue value)[] parameters)
         {
-            UsingCommand(conn, query, action, (IEnumerable<(string, TValue)>)parameters);
+            UsingCommand(conn, query, action, (IEnumerable<(string name, TValue value)>)parameters);
         }
 
-        public static void UsingCommand<TValue>(this DbConnection conn, string query, Action<DbCommand> action, IEnumerable<(string, TValue)> parameters)
+        public static void UsingCommand<TValue>(this DbConnection conn, string query, Action<DbCommand> action, IEnumerable<(string name, TValue value)> parameters)
         {
             using (var dbCommand = conn.CreateCommand())
             {
@@ -148,12 +148,12 @@ namespace SqlExtensions
 
         #region Using DbCommand Function
 
-        public static TOut UsingCommand<TOut, TValue>(this DbConnection conn, string query, Func<DbCommand, TOut> func, params (string, TValue)[] parameters)
+        public static TOut UsingCommand<TOut, TValue>(this DbConnection conn, string query, Func<DbCommand, TOut> func, params (string name, TValue value)[] parameters)
         {
-            return UsingCommand(conn, query, func, (IEnumerable<(string, TValue)>)parameters);
+            return UsingCommand(conn, query, func, (IEnumerable<(string name, TValue value)>)parameters);
         }
 
-        public static TOut UsingCommand<TOut, TValue>(this DbConnection conn, string query, Func<DbCommand, TOut> func, IEnumerable<(string, TValue)> parameters)
+        public static TOut UsingCommand<TOut, TValue>(this DbConnection conn, string query, Func<DbCommand, TOut> func, IEnumerable<(string name, TValue value)> parameters)
         {
             using (var dbCommand = conn.CreateCommand())
             {
@@ -193,10 +193,10 @@ namespace SqlExtensions
         public static IReadOnlyList<TOut> QueryList<TOut>(this DbConnection conn, string query, Func<DbCommand, IReadOnlyList<TOut>> func, object parameters)
             => conn.UsingCommand(query, func, parameters);
 
-        public static IReadOnlyList<TOut> QueryList<TOut, TValue>(this DbConnection conn, string query, Func<DbCommand, IReadOnlyList<TOut>> func, params (string, TValue)[] parameters)
+        public static IReadOnlyList<TOut> QueryList<TOut, TValue>(this DbConnection conn, string query, Func<DbCommand, IReadOnlyList<TOut>> func, params (string name, TValue value)[] parameters)
             => conn.UsingCommand(query, func, parameters);
 
-        public static IReadOnlyList<TOut> QueryList<TOut, TValue>(this DbConnection conn, string query, Func<DbCommand, IReadOnlyList<TOut>> func, IEnumerable<(string, TValue)> parameters)
+        public static IReadOnlyList<TOut> QueryList<TOut, TValue>(this DbConnection conn, string query, Func<DbCommand, IReadOnlyList<TOut>> func, IEnumerable<(string name, TValue value)> parameters)
             => conn.UsingCommand(query, func, parameters);
 
         public static IReadOnlyList<TOut> QueryList<TOut, TValue>(this DbConnection conn, string query, Func<DbCommand, IReadOnlyList<TOut>> func, IEnumerable<KeyValuePair<string, TValue>> parameters)
@@ -225,12 +225,12 @@ namespace SqlExtensions
             }
         }
 
-        public static IReadOnlyList<TOut> QueryList<TOut, TValue>(this DbConnection conn, string query, Func<DbDataReader, IReadOnlyList<TOut>> func, params (string, TValue)[] parameters)
+        public static IReadOnlyList<TOut> QueryList<TOut, TValue>(this DbConnection conn, string query, Func<DbDataReader, IReadOnlyList<TOut>> func, params (string name, TValue value)[] parameters)
         {
-            return QueryList(conn, query, func, (IEnumerable<(string, TValue)>)parameters);
+            return QueryList(conn, query, func, (IEnumerable<(string name, TValue value)>)parameters);
         }
 
-        public static IReadOnlyList<TOut> QueryList<TOut, TValue>(this DbConnection conn, string query, Func<DbDataReader, IReadOnlyList<TOut>> func, IEnumerable<(string, TValue)> parameters)
+        public static IReadOnlyList<TOut> QueryList<TOut, TValue>(this DbConnection conn, string query, Func<DbDataReader, IReadOnlyList<TOut>> func, IEnumerable<(string name, TValue value)> parameters)
         {
             using (var dbCommand = conn.CreateCommand())
             {
@@ -260,10 +260,10 @@ namespace SqlExtensions
         public static TOut QuerySingle<TOut>(this DbConnection conn, string query, Func<DbCommand, TOut> func, object parameters)
             => conn.UsingCommand(query, func, parameters);
 
-        public static TOut QuerySingle<TOut, TValue>(this DbConnection conn, string query, Func<DbCommand, TOut> func, params (string, TValue)[] parameters)
+        public static TOut QuerySingle<TOut, TValue>(this DbConnection conn, string query, Func<DbCommand, TOut> func, params (string name, TValue value)[] parameters)
             => conn.UsingCommand(query, func, parameters);
 
-        public static TOut QuerySingle<TOut, TValue>(this DbConnection conn, string query, Func<DbCommand, TOut> func, IEnumerable<(string, TValue)> parameters)
+        public static TOut QuerySingle<TOut, TValue>(this DbConnection conn, string query, Func<DbCommand, TOut> func, IEnumerable<(string name, TValue value)> parameters)
             => conn.UsingCommand(query, func, parameters);
 
         public static TOut QuerySingle<TOut, TValue>(this DbConnection conn, string query, Func<DbCommand, TOut> func, IEnumerable<KeyValuePair<string, TValue>> parameters)
@@ -279,10 +279,10 @@ namespace SqlExtensions
         public static TOut QuerySingle<TOut>(this DbConnection conn, string query, Func<DbDataReader, TOut> func, object parameters)
             => conn.UsingCommand(query, cmd => cmd.QuerySingle(func), parameters);
 
-        public static TOut QuerySingle<TOut, TValue>(this DbConnection conn, string query, Func<DbDataReader, TOut> func, params (string, TValue)[] parameters)
+        public static TOut QuerySingle<TOut, TValue>(this DbConnection conn, string query, Func<DbDataReader, TOut> func, params (string name, TValue value)[] parameters)
             => conn.UsingCommand(query, cmd => cmd.QuerySingle(func), parameters);
 
-        public static TOut QuerySingle<TOut, TValue>(this DbConnection conn, string query, Func<DbDataReader, TOut> func, IEnumerable<(string, TValue)> parameters)
+        public static TOut QuerySingle<TOut, TValue>(this DbConnection conn, string query, Func<DbDataReader, TOut> func, IEnumerable<(string name, TValue value)> parameters)
             => conn.UsingCommand(query, cmd => cmd.QuerySingle(func), parameters);
 
         public static TOut QuerySingle<TOut, TValue>(this DbConnection conn, string query, Func<DbDataReader, TOut> func, IEnumerable<KeyValuePair<string, TValue>> parameters)
@@ -295,10 +295,10 @@ namespace SqlExtensions
         public static int NonQuery(this DbConnection conn, string sql, object parameters)
             => conn.UsingCommand(sql, cmd => cmd.ExecuteNonQuery(), parameters);
 
-        public static int NonQuery<TValue>(this DbConnection conn, string sql, params (string, TValue)[] parameters)
+        public static int NonQuery<TValue>(this DbConnection conn, string sql, params (string name, TValue value)[] parameters)
             => conn.UsingCommand(sql, cmd => cmd.ExecuteNonQuery(), parameters);
 
-        public static int NonQuery<TValue>(this DbConnection conn, string sql, IEnumerable<(string, TValue)> parameters)
+        public static int NonQuery<TValue>(this DbConnection conn, string sql, IEnumerable<(string name, TValue value)> parameters)
             => conn.UsingCommand(sql, cmd => cmd.ExecuteNonQuery(), parameters);
 
         public static int NonQuery<TValue>(this DbConnection conn, string sql, IEnumerable<KeyValuePair<string, TValue>> parameters)

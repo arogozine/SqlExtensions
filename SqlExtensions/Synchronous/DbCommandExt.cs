@@ -85,5 +85,16 @@ namespace SqlExtensions
                 command.AddParameterWithValue(name, value);
             }
         }
+
+        public static void AddParameters<T>(this DbCommand command, params (string name, T value)[] parameters)
+        {
+            if (parameters == null)
+                return;
+
+            foreach ((var name, T value) in parameters)
+            {
+                command.AddParameterWithValue(name, value);
+            }
+        }
     }
 }
