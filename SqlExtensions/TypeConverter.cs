@@ -338,13 +338,11 @@ namespace SqlExtensions
                     }
                 }
             }
-
-            /*
+            
             if (TryAddComponentTypeConverter(from, to))
             {
                 return true;
             }
-            */
 
             try
             {
@@ -416,7 +414,7 @@ namespace SqlExtensions
 
             return false;
         }
-        /*
+        
         private static bool TryAddComponentTypeConverter(Type from, Type to)
         {
             var converter = System.ComponentModel.TypeDescriptor.GetConverter(to);
@@ -437,7 +435,7 @@ namespace SqlExtensions
 
             return false;
         }
-        */
+        
         public static void AddEnumConverters(Type enumType)
         {
             AddEnumCast<byte>(enumType);
