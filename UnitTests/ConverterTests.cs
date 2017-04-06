@@ -244,7 +244,7 @@ namespace UnitTests
         public void TestParseFloat() => TestParse(float.MaxValue);
 
         [TestMethod]
-        public void TestParseDouble() => TestParse(double.MaxValue);
+        public void TestParseDouble() => TestParse(1256.0 /* double */);
 
         [TestMethod]
         public void TestDecimal() => TestParse(decimal.MaxValue);
@@ -328,7 +328,7 @@ namespace UnitTests
                 => 'a';
 
             public DateTime ToDateTime(IFormatProvider provider)
-                => DateTime.Now;
+                => DateTime.Today;
 
             public decimal ToDecimal(IFormatProvider provider)
                 => 2;
